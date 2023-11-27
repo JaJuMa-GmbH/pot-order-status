@@ -1,0 +1,355 @@
+<?php
+use Magento\Framework\Escaper;
+use Jajuma\PotOrderStatus\Block\Order;
+
+/** @var $block Order */
+/** @var $escaper Escaper */
+
+//$magewire = $block->getMagewire();
+$lastXHours = $block->getLastXHours();
+$orderPending = $block->getNumberOrder('pending');
+$orderProcessing = $block->getNumberOrder('processing');
+$orderComplete = $block->getNumberOrder('complete');
+$orderCancel = $block->getNumberOrder('canceled');
+$priceHelper = $this->helper('Magento\Framework\Pricing\Helper\Data');
+$totalOrders = $block->getNumberOrder();
+$revenue = $block->getRevenue();
+?>
+
+<div class="jajuma-animateme">
+    <ul class="jajuma-bg-bubbles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<div class="powertoys-widget-title title-transparent jajuma-order-status-title"><?= 'Orders in last '.$lastXHours.' hours' ?></div>
+<div id="jajuma_pot_order_status">
+    <div class="jajuma-order-status-list">
+        <div class="jajuma-order-status-wrapper">
+            <div class="" style="color: #fff;">
+                <label style="font-size: 12px;">Qty</label><br>
+                <span style="font-size: 28px; font-weight: bold;"><?= $totalOrders; ?></span>
+            </div>
+            <div class="" style="color: #fff; text-align: right;">
+                <label>Revenue</label><br>
+                <span style="font-size: 28px; font-weight: bold;"><?= $revenue; ?></span>
+            </div>
+        </div>
+        <div class="jajuma-order-status-wrapper">
+            <div class="jajuma-order-status-item pending">
+                <label><?= 'Pending:' ?></label>
+                <span><?= $orderPending ?></span>
+            </div>
+            <div class="jajuma-order-status-item processing">
+                <label><?= 'Processing:' ?></label>
+                <span><?= $orderProcessing ?></span>
+            </div>
+            <div class="jajuma-order-status-item complete">
+                <label><?= 'Complete:' ?></label>
+                <span><?= $orderComplete ?></span>
+            </div>
+            <div class="jajuma-order-status-item cancel">
+                <label><?= 'Cancel:' ?></label>
+                <span><?= $orderCancel ?></span>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .powertoys-dashboard-widgets .widget-item.widget-item-pot_order_status {
+        background-image: linear-gradient( 112.1deg,  rgba(32,38,57,1) 11.4%, rgba(63,76,119,1) 70.2% );
+        overflow: hidden;
+    }
+
+    #jajuma_pot_order_status {
+        height: calc(100% - 30px);
+    }
+
+    .jajuma-order-status-title,
+    #jajuma_pot_order_status {
+        position: relative;
+        z-index: 1;
+    }
+
+    .jajuma-order-status-wrapper {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 8px;
+    }
+
+    .jajuma-order-status-wrapper:last-child {
+        padding-top: 7px;
+        border-top: 1px solid #fff;
+    }
+
+    .jajuma-order-status-item {
+        display: inline-flex;
+        padding: 4px;
+        background-color: #fff;
+        border-radius: 8px;
+        justify-content: space-between;
+        border: 1px solid rgb(218,220,224);
+        line-height: 20px;
+    }
+
+    .jajuma-order-status-list {
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .jajuma-last-order-details {
+        background: #ffffffc4;
+        border-radius: 16px;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        transform: translateX(100%);
+        transition: all .3s ease;
+        visibility: hidden;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .widget-item-pot_order_status:hover .jajuma-last-order-details {
+        opacity: 1;
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .jajuma-order-status-list .view-last-order {
+        margin: 15px auto 5px;
+        text-align: center;
+        padding: 2px 10px;
+        background: #ffffffa1;
+        border-radius: 20px;
+        width: fit-content;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+    }
+
+    .jajuma-order-status-list .view-last-order svg {
+        width: 12px;
+        height: 12px;
+        margin: 2px;
+        display: inline-block;
+    }
+
+    .jajuma-last-order-details span {
+        font-weight: 700;
+    }
+
+    .jajuma-order-status-item.pending {
+        color: #F59E0B;
+        background: #FFFBEB;
+        border-color: #F59E0B;
+    }
+
+    .jajuma-order-status-item.processing {
+        color: #3B82F6;
+        background: #EFF6FF;
+        border-color: #3B82F6;
+    }
+
+    .jajuma-order-status-item.complete {
+        color: #10B981;
+        background: #ECFDF5;
+        border-color: #10B981;
+    }
+
+    .jajuma-order-status-item.cancel {
+        color: #F43F5E;
+        background: #FFF1F2;
+        border-color: #F43F5E;
+    }
+
+    .jajuma-animateme {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .jajuma-bg-bubbles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    .jajuma-bg-bubbles li {
+        position: absolute;
+        list-style: none;
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-color: #ccc;
+        bottom: -20px;
+        -webkit-animation: square 25s infinite;
+        animation: square 25s infinite;
+        -webkit-transition-timing-function: linear;
+        transition-timing-function: linear;
+        opacity:0;
+    }
+
+    .jajuma-bg-bubbles li:nth-child(1) {
+        left: 3%;
+        border-radius:50em;
+        background:transparent;
+        border:4px solid #ccc;
+    }
+    .jajuma-bg-bubbles li:nth-child(2) {
+        left: 6%;
+        width: 55px;
+        height: 55px;
+        -webkit-animation-delay: 2s;
+                animation-delay: 2s;
+        -webkit-animation-duration: 17s;
+                animation-duration: 17s;
+    }
+    .jajuma-bg-bubbles li:nth-child(3) {
+        left: 15%;
+        width: 15px;
+        height: 15px;
+        -webkit-animation-delay: 4s;
+                animation-delay: 4s;
+    }
+    .jajuma-bg-bubbles li:nth-child(4) {
+        left: 40%;
+        width: 20px;
+        height: 20px;
+        -webkit-animation-duration: 22s;
+                animation-duration: 22s;
+    }
+    .jajuma-bg-bubbles li:nth-child(5) {
+        left: 70%;
+        background:transparent;
+        border:4px solid #ccc;
+    }
+    .jajuma-bg-bubbles li:nth-child(6) {
+        left: 90%;
+        width: 50px;
+        height: 50px;
+        -webkit-animation-delay: 3s;
+                animation-delay: 3s;
+        border-radius:50em;
+        background:transparent;
+        border:4px solid #ccc;
+    }
+    .jajuma-bg-bubbles li:nth-child(7) {
+        left: 32%;
+        width: 40px;
+        height: 40px;
+        -webkit-animation-delay: 7s;
+                animation-delay: 7s;
+        background:transparent;
+        border:4px solid #ccc;
+    }
+    .jajuma-bg-bubbles li:nth-child(8) {
+        left: 55%;
+        width: 20px;
+        height: 20px;
+        -webkit-animation-delay: 15s;
+                animation-delay: 15s;
+        -webkit-animation-duration: 40s;
+                animation-duration: 40s;
+    }
+    .jajuma-bg-bubbles li:nth-child(9) {
+        left: 30%;
+        width: 30px;
+        height: 30px;
+        -webkit-animation-delay: 2s;
+                animation-delay: 2s;
+        -webkit-animation-duration: 40s;
+                animation-duration: 40s;
+        border-radius:50em;
+        background:transparent;
+        border:4px solid #ccc;
+    }
+    .jajuma-bg-bubbles li:nth-child(10) {
+        left: 90%;
+        width: 50px;
+        height: 50px;
+        -webkit-animation-delay: 11s;
+                animation-delay: 11s;
+    }
+    .jajuma-bg-bubbles li:nth-child(11) {
+        left: 10%;
+        width: 40px;
+        height: 40px;
+        -webkit-animation-delay: 13s;
+                animation-delay: 13s;
+        border-radius:50em;
+    }
+        .jajuma-bg-bubbles li:nth-child(12) {
+        left: 55%;
+        width: 35px;
+        height: 35px;
+        -webkit-animation-delay: 7s;
+                animation-delay: 7s;
+        background:transparent;
+        border:4px solid #ccc;
+    }
+
+    .jajuma-bg-bubbles li:nth-child(13) {
+        left: 65%;
+        width: 30px;
+        height: 30px;
+        -webkit-animation-delay: 8s;
+                animation-delay: 8s;
+        border-radius:50em;
+    }
+
+    @-webkit-keyframes square {
+        0% {
+            -webkit-transform: translateY(0);
+                    transform: translateY(0);
+            opacity:0;
+        }
+        50% {
+            opacity:1;
+        }
+        100% {
+            -webkit-transform: translateY(-700px) rotate(600deg);
+                    transform: translateY(-700px) rotate(600deg);
+            opacity:1;
+        }
+    }
+    @keyframes square {
+        0% {
+            -webkit-transform: translateY(0);
+                    transform: translateY(0);
+            opacity:0;
+        }
+        50% {
+            opacity:1;
+        }
+        100% {
+            -webkit-transform: translateY(-700px) rotate(600deg);
+                    transform: translateY(-700px) rotate(600deg);
+            opacity:0;
+        }
+    }
+</style>

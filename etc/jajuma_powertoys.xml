@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<powertoys xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Jajuma_PowerToys:etc/jajuma_powertoys.xsd">
+    <dashboard id="pot_order_status" class="Jajuma\PotOrderStatus\Block\Order">
+        <label translate="true">Order Status</label>
+        <arguments>
+            <argument name="enable">true</argument>
+            <argument name="template">Jajuma_PotOrderStatus::order.phtml</argument>
+            <argument name="lazyload">true</argument>
+            <argument name="sort_order">80</argument>
+        </arguments>
+    </dashboard>
+</powertoys>
